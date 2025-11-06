@@ -1,3 +1,4 @@
+// No arquivo: AppNavigation.kt
 package com.example.projetoforca.navigation
 
 import androidx.compose.material3.Text
@@ -8,6 +9,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.projetoforca.ui.configuracoes.TelaConfiguracoes
 import com.example.projetoforca.ui.telaInicial.TelaInicial
+
+// 1. IMPORTAR A TELA DE LOGIN QUE CRIAMOS
+import com.example.projetoforca.ui.autenticacao.TelaLogin
 
 
 @Composable
@@ -22,16 +26,26 @@ fun AppNavigation() {
 
         // --- ROTAS ADICIONADAS ---
 
-        // 2. ROTA PARA A TELA DE CONFIGURAÇÕES (chamada pelo ícone)
         composable("configuracoes") {
             TelaConfiguracoes(navController = navController)
         }
 
-        // 3. ROTA PARA LOGIN/CADASTRO (chamada pelo botão "JOGAR")
+        // 2. ROTA DE LOGIN ATUALIZADA (NÃO É MAIS UM PLACEHOLDER)
         composable("login/cadastro") {
-            // Você não forneceu esta tela, então usei um placeholder.
-            // Quando criar a TelaLogin, substitua este Text() por ela.
-            Text("Tela de Login/Cadastro (placeholder)")
+            // Chamamos a TelaLogin que você criou
+            TelaLogin(
+                onLoginSuccess = {
+                    // Login deu certo!
+                    // Navega para a tela "jogo" e limpa a pilha de navegação
+                    // (para que o usuário não possa "voltar" para o login)
+                    navController.navigate("jogo") {
+                        popUpTo(navController.graph.startDestinationId) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                }
+            )
         }
 
         // --- ROTAS QUE JÁ EXISTIAM ---
@@ -41,7 +55,14 @@ fun AppNavigation() {
         }
 
         composable("jogo") {
+            // Esta é a tela para onde o usuário vai após o login.
+            // Quando você criá-la, substitua este placeholder.
             Text("Tela de Jogo (placeholder)")
+        }
+
+        // 3. ROTA PARA O ADMIN (vamos precisar dela em breve)
+        composable("admin_dashboard") {
+            Text("Tela de Admin (placeholder)")
         }
     }
 }
