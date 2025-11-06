@@ -59,12 +59,8 @@ fun TelaInicial(
                 verticalArrangement = Arrangement.Center
             ) {
 
-                Spacer(modifier = Modifier.weight(1f))
-                Text(
-                    text = "hangman_drawing_placeholder",
-                    color = Color.DarkGray,
-                    fontSize = 12.sp
-                )
+                Spacer(modifier = Modifier.weight(2f))
+
                 Spacer(modifier = Modifier.height(40.dp))
                 Text(
                     text = buildAnnotatedString {
@@ -99,7 +95,6 @@ fun TelaInicial(
         }
     }
 }
-
 @Composable
 private fun BotaoAmareloEstilizado(
     texto: String,
