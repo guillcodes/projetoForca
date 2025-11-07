@@ -1,3 +1,4 @@
+// No arquivo: TelaInicial.kt
 package com.example.projetoforca.ui.telaInicial
 
 import androidx.compose.foundation.background
@@ -30,6 +31,8 @@ import androidx.navigation.NavHostController
 @Composable
 fun TelaInicial(
     navController: NavHostController,
+    isLoggedIn: Boolean,
+    onLogout: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Surface(
@@ -61,7 +64,6 @@ fun TelaInicial(
 
                 Spacer(modifier = Modifier.weight(2f))
 
-                Spacer(modifier = Modifier.height(40.dp))
                 Text(
                     text = buildAnnotatedString {
                         append("JOGO DA\n")
@@ -71,16 +73,26 @@ fun TelaInicial(
                     },
                     fontSize = 48.sp,
                     fontWeight = FontWeight.Black,
-                    color = Color(0xFFFDD835), // Amarelo vibrante
+                    color = Color(0xFFFDD835),
                     textAlign = TextAlign.Center,
                     lineHeight = 50.sp
                 )
 
                 Spacer(modifier = Modifier.weight(1.5f))
 
+                // --- LÓGICA DO BOTÃO JOGAR MUDADA ---
                 BotaoAmareloEstilizado(
                     texto = "JOGAR",
-                    onClick = { navController.navigate("login/cadastro") }
+                    onClick = {
+                        if (isLoggedIn) {
+                            // Se está logado, vai para o jogo
+                            navController.navigate("jogo")
+                        } else {
+                            // Se não está logado, vai para o login
+                            // (Usando a rota do seu AppNavigation.kt)
+                            navController.navigate("login/cadastro")
+                        }
+                    }
                 )
 
                 Spacer(modifier = Modifier.height(20.dp))
@@ -90,11 +102,22 @@ fun TelaInicial(
                     onClick = { navController.navigate("classificacao") }
                 )
 
+                // --- MOSTRA O BOTÃO SAIR SE ESTIVER LOGADO ---
+                if (isLoggedIn) {
+                    Spacer(modifier = Modifier.height(20.dp))
+                    BotaoVermelhoEstilizado(
+                        texto = "SAIR",
+                        onClick = onLogout // Chama a função de logout
+                    )
+                }
+
                 Spacer(modifier = Modifier.weight(1f))
             }
         }
     }
 }
+
+// ... (BotaoAmareloEstilizado - cole o seu código aqui) ...
 @Composable
 private fun BotaoAmareloEstilizado(
     texto: String,
@@ -126,6 +149,45 @@ private fun BotaoAmareloEstilizado(
             Text(
                 text = texto,
                 color = Color.Black,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold
+            )
+        }
+    }
+}
+
+// --- BOTÃO VERMELHO (para o "SAIR") ---
+@Composable
+private fun BotaoVermelhoEstilizado(
+    texto: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Button(
+        onClick = onClick,
+        modifier = modifier
+            .fillMaxWidth()
+            .height(60.dp),
+        shape = RoundedCornerShape(12.dp),
+        colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
+        contentPadding = PaddingValues(0.dp),
+        elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp)
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = listOf(Color(0xFFE53935), Color(0xFFC62828)) // Gradiente Vermelho
+                    ),
+                    shape = RoundedCornerShape(12.dp)
+                )
+                .border(2.dp, Color.White.copy(alpha = 0.8f), RoundedCornerShape(12.dp)),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = texto,
+                color = Color.White,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold
             )

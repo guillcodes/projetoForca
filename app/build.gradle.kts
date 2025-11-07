@@ -43,6 +43,9 @@ android {
 
 dependencies {
 
+    // --- ADICIONE ESTA LINHA PARA CORRIGIR O ERRO 'EmojiEvents' ---
+    implementation(libs.androidx.material.icons.extended)
+
     implementation(platform("com.google.firebase:firebase-bom:34.5.0"))
     implementation("com.google.firebase:firebase-auth")
 

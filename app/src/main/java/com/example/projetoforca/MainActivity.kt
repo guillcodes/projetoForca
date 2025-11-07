@@ -11,8 +11,12 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import com.example.projetoforca.navigation.AppNavigation
 import com.example.projetoforca.ui.theme.ProjetoForcaTheme
+import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : ComponentActivity() {
+
+    private val auth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -20,11 +24,12 @@ class MainActivity : ComponentActivity() {
             ProjetoForcaTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Box(modifier = Modifier.padding(innerPadding)) {
-                        AppNavigation()
+
+                        AppNavigation(auth = auth)
+
                     }
                 }
             }
         }
     }
 }
-

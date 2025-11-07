@@ -9,10 +9,7 @@ import androidx.room.RoomDatabase
 @Database(entities = [Ranking::class, Palavra::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
-    // Expõe o DAO do Ranking
     abstract fun rankingDao(): RankingDao
-
-    // (LINHA NOVA) Expõe o DAO da Palavra
     abstract fun palavraDao(): PalavraDao
 
     companion object {
@@ -25,7 +22,9 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     "app_database"
-                ).build()
+                )
+                    // O Callback foi removido daqui
+                    .build()
                 INSTANCE = instance
                 instance
             }

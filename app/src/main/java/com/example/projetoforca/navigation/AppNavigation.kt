@@ -9,58 +9,59 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.projetoforca.ui.configuracoes.TelaConfiguracoes
 import com.example.projetoforca.ui.telaInicial.TelaInicial
-
-// 1. IMPORTAR A TELA DE LOGIN QUE CRIAMOS
 import com.example.projetoforca.ui.autenticacao.TelaLogin
-
+import com.example.projetoforca.ui.classificacao.TelaClassificacao
+import com.example.projetoforca.ui.jogo.TelaDeJogo
+import com.google.firebase.auth.FirebaseAuth // <-- IMPORTE O AUTH
 
 @Composable
-fun AppNavigation() {
+fun AppNavigation(auth: FirebaseAuth) { // <-- RECEBA O AUTH AQUI
     val navController: NavHostController = rememberNavController()
 
     NavHost(navController = navController, startDestination = "tela_inicial") {
 
         composable("tela_inicial") {
-            TelaInicial(navController = navController)
-        }
+            // LÓGICA DE LOGIN MOVIDA PARA CÁ
+            val isLoggedIn = auth.currentUser != null
 
-        // --- ROTAS ADICIONADAS ---
-
-        composable("configuracoes") {
-            TelaConfiguracoes(navController = navController)
-        }
-
-        // 2. ROTA DE LOGIN ATUALIZADA (NÃO É MAIS UM PLACEHOLDER)
-        composable("login/cadastro") {
-            // Chamamos a TelaLogin que você criou
-            TelaLogin(
-                onLoginSuccess = {
-                    // Login deu certo!
-                    // Navega para a tela "jogo" e limpa a pilha de navegação
-                    // (para que o usuário não possa "voltar" para o login)
-                    navController.navigate("jogo") {
-                        popUpTo(navController.graph.startDestinationId) {
-                            inclusive = true
-                        }
-                        launchSingleTop = true
+            TelaInicial(
+                navController = navController,
+                isLoggedIn = isLoggedIn, // Passa o status do login
+                onLogout = {             // Passa a função de logout
+                    auth.signOut()
+                    // Volta para a tela inicial (agora deslogado)
+                    // e limpa a pilha de navegação
+                    navController.navigate("tela_inicial") {
+                        popUpTo(0)
                     }
                 }
             )
         }
 
-        // --- ROTAS QUE JÁ EXISTIAM ---
+        composable("configuracoes") {
+            TelaConfiguracoes(navController = navController)
+        }
+
+        composable("login/cadastro") {
+            TelaLogin(
+                onLoginSuccess = {
+                    // CORREÇÃO: Após o login, volte para a "tela_inicial".
+                    // Ela vai recarregar e mostrar o botão "Sair".
+                    navController.navigate("tela_inicial") {
+                        popUpTo(0)
+                    }
+                }
+            )
+        }
 
         composable("classificacao") {
-            Text("Tela de Classificação (placeholder)")
+            TelaClassificacao(navController = navController)
         }
 
         composable("jogo") {
-            // Esta é a tela para onde o usuário vai após o login.
-            // Quando você criá-la, substitua este placeholder.
-            Text("Tela de Jogo (placeholder)")
+            TelaDeJogo(navController = navController)
         }
 
-        // 3. ROTA PARA O ADMIN (vamos precisar dela em breve)
         composable("admin_dashboard") {
             Text("Tela de Admin (placeholder)")
         }
