@@ -12,10 +12,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-// DEFINIÇÃO DO ESTADO (Corrige 'ERRO_PALAVRA', 'VENCEU', 'PERDEU')
+
 enum class GameState { JOGANDO, VENCEU, PERDEU, CARREGANDO, ERRO_PALAVRA }
 
-// DEFINIÇÃO DO UISTATE (Corrige 'palavraSecreta', 'palavraExibida', 'categoria', etc.)
 data class JogoUiState(
     val palavraSecreta: String = "",
     val palavraExibida: String = "",
@@ -26,23 +25,18 @@ data class JogoUiState(
     val estadoDoJogo: GameState = GameState.CARREGANDO
 )
 
-/**
- * DEFINIÇÃO DO VIEWMODEL (Corrige 'JogoViewModel')
- * Agora recebe RankingRepository para salvar a pontuação.
- */
 class JogoViewModel(
-    private val jogoRepository: JogoRepository, //
-    private val rankingRepository: RankingRepository //
+    private val jogoRepository: JogoRepository,
+    private val rankingRepository: RankingRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(JogoUiState())
-    val uiState: StateFlow<JogoUiState> = _uiState.asStateFlow() // Corrige 'uiState'
+    val uiState: StateFlow<JogoUiState> = _uiState.asStateFlow()
 
     init {
         iniciarJogo(categoria = "Frutas")
     }
 
-    // DEFINIÇÃO DAS FUNÇÕES (Corrige 'iniciarJogo', 'tentarLetra')
     fun iniciarJogo(categoria: String) {
         _uiState.value = JogoUiState(estadoDoJogo = GameState.CARREGANDO)
         viewModelScope.launch {
@@ -99,7 +93,6 @@ class JogoViewModel(
         }.joinToString(" ")
     }
 
-    // DEFINIÇÃO DA FUNÇÃO (Corrige 'salvarPontuacao')
     fun salvarPontuacao(nomeJogador: String) {
         if (_uiState.value.estadoDoJogo != GameState.VENCEU) return
         val pontuacao = 100 - (_uiState.value.erros * 10)
@@ -112,10 +105,6 @@ class JogoViewModel(
     }
 }
 
-/**
- * DEFINIÇÃO DA FACTORY (Corrige 'JogoViewModelFactory')
- * Agora injeta AMBOS os repositórios.
- */
 class JogoViewModelFactory(
     private val jogoRepository: JogoRepository,
     private val rankingRepository: RankingRepository

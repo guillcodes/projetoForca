@@ -1,4 +1,4 @@
-// No arquivo: TelaInicial.kt
+
 package com.example.projetoforca.ui.telaInicial
 
 import androidx.compose.foundation.background
@@ -80,16 +80,14 @@ fun TelaInicial(
 
                 Spacer(modifier = Modifier.weight(1.5f))
 
-                // --- LÓGICA DO BOTÃO JOGAR MUDADA ---
                 BotaoAmareloEstilizado(
                     texto = "JOGAR",
                     onClick = {
                         if (isLoggedIn) {
-                            // Se está logado, vai para o jogo
+
                             navController.navigate("jogo")
                         } else {
-                            // Se não está logado, vai para o login
-                            // (Usando a rota do seu AppNavigation.kt)
+
                             navController.navigate("login/cadastro")
                         }
                     }
@@ -102,12 +100,12 @@ fun TelaInicial(
                     onClick = { navController.navigate("classificacao") }
                 )
 
-                // --- MOSTRA O BOTÃO SAIR SE ESTIVER LOGADO ---
+
                 if (isLoggedIn) {
                     Spacer(modifier = Modifier.height(20.dp))
                     BotaoVermelhoEstilizado(
                         texto = "SAIR",
-                        onClick = onLogout // Chama a função de logout
+                        onClick = onLogout
                     )
                 }
 
@@ -117,7 +115,7 @@ fun TelaInicial(
     }
 }
 
-// ... (BotaoAmareloEstilizado - cole o seu código aqui) ...
+
 @Composable
 private fun BotaoAmareloEstilizado(
     texto: String,
@@ -130,7 +128,7 @@ private fun BotaoAmareloEstilizado(
             .fillMaxWidth()
             .height(60.dp),
         shape = RoundedCornerShape(12.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent), // Fundo controlado pelo Box
+        colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
         contentPadding = PaddingValues(0.dp),
         elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp)
     ) {
@@ -139,11 +137,11 @@ private fun BotaoAmareloEstilizado(
                 .fillMaxSize()
                 .background(
                     brush = Brush.verticalGradient(
-                        colors = listOf(Color(0xFFFDD835), Color(0xFFFBC02D)) // Gradiente amarelo
+                        colors = listOf(Color(0xFFFDD835), Color(0xFFFBC02D))
                     ),
                     shape = RoundedCornerShape(12.dp)
                 )
-                .border(2.dp, Color.White.copy(alpha = 0.8f), RoundedCornerShape(12.dp)), // Borda branca
+                .border(2.dp, Color.White.copy(alpha = 0.8f), RoundedCornerShape(12.dp)),
             contentAlignment = Alignment.Center
         ) {
             Text(
@@ -156,7 +154,7 @@ private fun BotaoAmareloEstilizado(
     }
 }
 
-// --- BOTÃO VERMELHO (para o "SAIR") ---
+
 @Composable
 private fun BotaoVermelhoEstilizado(
     texto: String,
@@ -178,7 +176,7 @@ private fun BotaoVermelhoEstilizado(
                 .fillMaxSize()
                 .background(
                     brush = Brush.verticalGradient(
-                        colors = listOf(Color(0xFFE53935), Color(0xFFC62828)) // Gradiente Vermelho
+                        colors = listOf(Color(0xFFE53935), Color(0xFFC62828))
                     ),
                     shape = RoundedCornerShape(12.dp)
                 )

@@ -39,19 +39,15 @@ fun TelaDeJogo(
     navController: NavHostController,
     categoriaSelecionada: String = "Frutas"
 ) {
-    // --- Configuração da Factory ---
     val context = LocalContext.current
     val database = AppDatabase.getDatabase(context.applicationContext)
     val jogoRepository = JogoRepository(database.palavraDao())
     val rankingRepository = RankingRepository(database.rankingDao())
-
-    // USA A FACTORY (Corrige 'JogoViewModelFactory')
     val factory = JogoViewModelFactory(jogoRepository, rankingRepository)
-    // USA O VIEWMODEL (Corrige 'JogoViewModel')
     val viewModel: JogoViewModel = viewModel(factory = factory)
-    // --- Fim da Configuração ---
 
-    // USA O UISTATE (Corrige 'uiState')
+
+
     val uiState by viewModel.uiState.collectAsState()
 
     val corFundo = Color(0xFF212121)
@@ -74,7 +70,7 @@ fun TelaDeJogo(
                 actions = {
                     IconButton(onClick = { navController.navigate("classificacao") }) {
                         Icon(
-                            Icons.Default.EmojiEvents, // <-- Corrige 'EmojiEvents'
+                            Icons.Default.EmojiEvents,
                             contentDescription = "Ranking",
                             tint = corTitulo
                         )
@@ -95,7 +91,7 @@ fun TelaDeJogo(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
-                // USA AS VARIÁVEIS DO UISTATE (Corrige 'erros', 'categoria', etc.)
+
                 DesenhoForca(erros = uiState.erros, cor = corTexto)
                 Text(
                     text = "Dica: ${uiState.categoria}",
@@ -124,7 +120,6 @@ fun TelaDeJogo(
                     Spacer(modifier = Modifier.height(16.dp))
                 }
 
-                // USA AS VARIÁVEIS E FUNÇÕES (Corrige 'letrasUsadas', 'tentarLetra')
                 Teclado(
                     letrasUsadas = uiState.letrasUsadas,
                     estadoDoJogo = uiState.estadoDoJogo,
@@ -138,7 +133,7 @@ fun TelaDeJogo(
                         estado = uiState.estadoDoJogo,
                         palavraSecreta = uiState.palavraSecreta,
                         onJogarNovamente = {
-                            viewModel.iniciarJogo(categoriaSelecionada) // Corrige 'iniciarJogo'
+                            viewModel.iniciarJogo(categoriaSelecionada)
                         },
                         onSair = {
                             navController.navigate("tela_inicial") {
@@ -146,7 +141,7 @@ fun TelaDeJogo(
                             }
                         },
                         onSalvarPontuacao = { nome ->
-                            viewModel.salvarPontuacao(nome) // Corrige 'salvarPontuacao'
+                            viewModel.salvarPontuacao(nome)
                             Toast.makeText(context, "Pontuação Salva!", Toast.LENGTH_SHORT).show()
                         }
                     )
@@ -156,7 +151,7 @@ fun TelaDeJogo(
     }
 }
 
-// ... (Composables 'Teclado', 'ResultadoDialog' e 'DesenhoForca' permanecem iguais) ...
+
 @Composable
 fun Teclado(
     letrasUsadas: Set<Char>,
@@ -176,7 +171,7 @@ fun Teclado(
                 onClick = { onLetraClick(letra) },
                 modifier = Modifier.aspectRatio(1f),
                 shape = RoundedCornerShape(8.dp),
-                enabled = !letraUsada && estadoDoJogo == GameState.JOGANDO, // Corrige 'JOGANDO'
+                enabled = !letraUsada && estadoDoJogo == GameState.JOGANDO,
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFFFDD835),
                     contentColor = Color.Black,

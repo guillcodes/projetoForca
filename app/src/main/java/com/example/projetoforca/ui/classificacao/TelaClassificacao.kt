@@ -34,21 +34,12 @@ import com.example.projetoforca.data.repository.RankingRepository
 fun TelaClassificacao(
     navController: NavHostController
 ) {
-    // --- Configuração da Injeção de Dependência (Factory) ---
-    // Isto é necessário para atender ao requisito da Factory
     val context = LocalContext.current
     val database = AppDatabase.getDatabase(context.applicationContext)
-    val repository = RankingRepository(database.rankingDao()) // Usando o DAO do DB
+    val repository = RankingRepository(database.rankingDao())
     val factory = ClassificacaoViewModelFactory(repository)
-
-    // Inicializa o ViewModel usando a Factory que acabamos de criar
     val viewModel: ClassificacaoViewModel = viewModel(factory = factory)
-    // --- Fim da Configuração ---
-
-    // Coleta o UiState do ViewModel de forma reativa
     val uiState by viewModel.uiState.collectAsState()
-
-    // Estilo "Quadro-Negro" que definimos anteriormente
     val corFundo = Color(0xFF212121)
     val corTitulo = Color(0xFFFDD835)
     val corTextoPadrao = Color.White
@@ -82,13 +73,13 @@ fun TelaClassificacao(
                 .padding(innerPadding),
             color = corFundo
         ) {
-            // A "LazyColumn" é obrigatória para listas dinâmicas
+
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(horizontal = 16.dp, vertical = 8.dp)
             ) {
-                // Cabeçalho da Lista
+
                 item {
                     Row(
                         modifier = Modifier
@@ -103,11 +94,10 @@ fun TelaClassificacao(
                     Spacer(modifier = Modifier.fillMaxWidth().height(2.dp).background(Color.Gray))
                 }
 
-                // Renderiza a lista de ranking vinda do UiState
                 itemsIndexed(uiState.rankingList) { index, rankingItem ->
                     RankingItemRow(
                         item = rankingItem,
-                        rank = index + 1 // Posição (1, 2, 3...)
+                        rank = index + 1
                     )
                 }
             }
@@ -115,16 +105,14 @@ fun TelaClassificacao(
     }
 }
 
-/**
- * Um Composable para desenhar cada linha do ranking.
- */
+
 @Composable
 fun RankingItemRow(item: Ranking, rank: Int) {
-    // Destaque para o Top 3
+
     val corDestaque = when (rank) {
-        1 -> Color(0xFFFDD835) // Ouro
-        2 -> Color(0xFFC0C0C0) // Prata
-        3 -> Color(0xFFCD7F32) // Bronze
+        1 -> Color(0xFFFDD835)
+        2 -> Color(0xFFC0C0C0)
+        3 -> Color(0xFFCD7F32)
         else -> Color.White
     }
 
@@ -134,21 +122,21 @@ fun RankingItemRow(item: Ranking, rank: Int) {
             .padding(vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // Posição
+
         Text(
             text = "$rank.",
             color = corDestaque,
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold
         )
-        // Nome (do Ranking.kt)
+
         Text(
             text = item.playerName,
             color = corDestaque,
             fontSize = 18.sp,
             modifier = Modifier.weight(1f).padding(horizontal = 16.dp)
         )
-        // Pontuação (do Ranking.kt)
+
         Text(
             text = "${item.score} pts",
             color = corDestaque,

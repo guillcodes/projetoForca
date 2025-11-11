@@ -24,7 +24,7 @@ fun TelaConfiguracoes(
     Surface(
         modifier = modifier
             .fillMaxSize()
-            .background(Color.Black), // Fundo preto
+            .background(Color.Black),
         color = Color.Black
     ) {
         Column(
@@ -34,16 +34,15 @@ fun TelaConfiguracoes(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            // Título
+
             Text(
                 text = "📖 PASSO A PASSO",
                 fontSize = 28.sp,
                 fontWeight = FontWeight.ExtraBold,
-                color = Color(0xFFFDD835), // Amarelo vibrante
+                color = Color(0xFFFDD835),
                 modifier = Modifier.padding(bottom = 32.dp)
             )
 
-            // Passos do jogo
             val textoAmarelo = Color(0xFFFDD835)
 
             Text(

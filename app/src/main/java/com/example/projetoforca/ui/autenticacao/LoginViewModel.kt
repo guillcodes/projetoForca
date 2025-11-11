@@ -1,4 +1,4 @@
-// No arquivo: LoginViewModel.kt
+
 package com.example.projetoforca.ui.autenticacao
 
 import androidx.lifecycle.ViewModel
@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-// (Assumindo que você tenha o LoginUiState.kt no mesmo pacote)
+
 
 class LoginViewModel : ViewModel() {
 
@@ -26,8 +26,6 @@ class LoginViewModel : ViewModel() {
 
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, errorMessage = null) }
-
-            // --- CORREÇÃO DO BUG DO EMAIL APLICADA AQUI ---
             auth.createUserWithEmailAndPassword(email.trim(), pass.trim())
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
@@ -49,7 +47,6 @@ class LoginViewModel : ViewModel() {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, errorMessage = null) }
 
-            // --- CORREÇÃO DO BUG DO EMAIL APLICADA AQUI ---
             auth.signInWithEmailAndPassword(email.trim(), pass.trim())
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
