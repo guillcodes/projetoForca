@@ -22,10 +22,7 @@ interface PalavraDao {
     @Query("DELETE FROM palavra_table")
     suspend fun clearAll()
 
-    // --- FUNÇÃO NOVA ADICIONADA ---
-    /**
-     * Conta quantas palavras existem na tabela.
-     */
+
     @Query("SELECT COUNT(*) FROM palavra_table")
     suspend fun count(): Int
 }

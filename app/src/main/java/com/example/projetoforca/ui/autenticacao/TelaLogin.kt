@@ -1,4 +1,3 @@
-
 package com.example.projetoforca.ui.autenticacao
 
 import android.widget.Toast
@@ -18,13 +17,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 
 @Composable
 fun TelaLogin(
+
+    navController: NavHostController,
     onLoginSuccess: () -> Unit,
     viewModel: LoginViewModel = viewModel()
 ) {
@@ -34,20 +35,28 @@ fun TelaLogin(
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
-
     LaunchedEffect(uiState.errorMessage) {
         uiState.errorMessage?.let {
             Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
             viewModel.clearError()
         }
     }
+
+
     LaunchedEffect(uiState.loginSuccess) {
         if (uiState.loginSuccess) {
             Toast.makeText(context, "Login bem-sucedido!", Toast.LENGTH_SHORT).show()
-            onLoginSuccess()
+
+
+            if (email == "loginadmin@gmail.com") {
+                navController.navigate("admin") {
+                    popUpTo(0)
+                }
+            } else {
+                onLoginSuccess()
+            }
         }
     }
-
 
     val bg = Color(0xFF0B0B0B)
     val cardBg = Color(0xFF121212)
@@ -107,14 +116,8 @@ fun TelaLogin(
                         imeAction = ImeAction.Next
                     ),
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedContainerColor = cardBg,
-                        unfocusedContainerColor = cardBg,
-                        disabledContainerColor = cardBg,
                         focusedBorderColor = accent,
                         unfocusedBorderColor = textOnDark.copy(alpha = 0.2f),
-                        cursorColor = accent,
-                        focusedTextColor = textOnDark,
-                        unfocusedTextColor = textOnDark
                     ),
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(14.dp)
@@ -138,14 +141,8 @@ fun TelaLogin(
                         }
                     ),
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedContainerColor = cardBg,
-                        unfocusedContainerColor = cardBg,
-                        disabledContainerColor = cardBg,
                         focusedBorderColor = accent,
                         unfocusedBorderColor = textOnDark.copy(alpha = 0.2f),
-                        cursorColor = accent,
-                        focusedTextColor = textOnDark,
-                        unfocusedTextColor = textOnDark
                     ),
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(14.dp)
@@ -177,9 +174,8 @@ fun TelaLogin(
                         Text("Entrar", fontWeight = FontWeight.Bold)
                     }
                 }
-
             }
         }
-
     }
 }
+

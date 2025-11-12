@@ -1,7 +1,6 @@
 package com.example.projetoforca.ui.jogo
 
 import android.widget.Toast
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -10,9 +9,10 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.EmojiEvents // <-- IMPORT CORRETO
+import androidx.compose.material.icons.filled.EmojiEvents
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -37,7 +37,8 @@ import com.example.projetoforca.data.repository.RankingRepository
 @Composable
 fun TelaDeJogo(
     navController: NavHostController,
-    categoriaSelecionada: String = "Frutas"
+    categoriaSelecionada: String = "Frutas",
+    palavraAdmin: String = ""
 ) {
     val context = LocalContext.current
     val database = AppDatabase.getDatabase(context.applicationContext)
@@ -46,9 +47,14 @@ fun TelaDeJogo(
     val factory = JogoViewModelFactory(jogoRepository, rankingRepository)
     val viewModel: JogoViewModel = viewModel(factory = factory)
 
-
-
     val uiState by viewModel.uiState.collectAsState()
+
+    LaunchedEffect(key1 = palavraAdmin, key2 = categoriaSelecionada) {
+        viewModel.iniciarJogo(
+            palavraForcada = palavraAdmin,
+            categoria = categoriaSelecionada
+        )
+    }
 
     val corFundo = Color(0xFF212121)
     val corTexto = Color.White
@@ -87,7 +93,9 @@ fun TelaDeJogo(
             color = corFundo
         ) {
             Column(
-                modifier = Modifier.fillMaxSize().padding(16.dp),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
@@ -133,7 +141,7 @@ fun TelaDeJogo(
                         estado = uiState.estadoDoJogo,
                         palavraSecreta = uiState.palavraSecreta,
                         onJogarNovamente = {
-                            viewModel.iniciarJogo(categoriaSelecionada)
+                            viewModel.iniciarJogo(palavraAdmin, categoriaSelecionada)
                         },
                         onSair = {
                             navController.navigate("tela_inicial") {
@@ -161,7 +169,9 @@ fun Teclado(
     val alfabeto = ('A'..'Z').toList()
     LazyVerticalGrid(
         columns = GridCells.Fixed(7),
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 4.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp),
         horizontalArrangement = Arrangement.spacedBy(4.dp)
     ) {

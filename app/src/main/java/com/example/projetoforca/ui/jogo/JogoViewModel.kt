@@ -3,6 +3,7 @@ package com.example.projetoforca.ui.jogo
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.example.projetoforca.data.local.Palavra
 import com.example.projetoforca.data.local.Ranking
 import com.example.projetoforca.data.repository.JogoRepository
 import com.example.projetoforca.data.repository.RankingRepository
@@ -11,8 +12,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-
-
 enum class GameState { JOGANDO, VENCEU, PERDEU, CARREGANDO, ERRO_PALAVRA }
 
 data class JogoUiState(
@@ -33,18 +32,27 @@ class JogoViewModel(
     private val _uiState = MutableStateFlow(JogoUiState())
     val uiState: StateFlow<JogoUiState> = _uiState.asStateFlow()
 
-    init {
-        iniciarJogo(categoria = "Frutas")
-    }
-
-    fun iniciarJogo(categoria: String) {
+    fun iniciarJogo(palavraForcada: String, categoria: String) {
         _uiState.value = JogoUiState(estadoDoJogo = GameState.CARREGANDO)
         viewModelScope.launch {
-            val palavraObj = jogoRepository.getPalavraAleatoria(categoria)
+
+            val palavraObj: Palavra?
+
+            if (palavraForcada.isNotBlank()) {
+
+                palavraObj = Palavra(
+                    palavra = palavraForcada.uppercase().trim(),
+                    categoria = "Admin" // Define a dica como "Admin"
+                )
+            } else {
+                palavraObj = jogoRepository.getPalavraAleatoria(categoria)
+            }
+
             if (palavraObj == null) {
                 _uiState.update { it.copy(estadoDoJogo = GameState.ERRO_PALAVRA, categoria = "Erro") }
                 return@launch
             }
+
             val palavra = palavraObj.palavra.uppercase().trim()
             _uiState.value = JogoUiState(
                 palavraSecreta = palavra,

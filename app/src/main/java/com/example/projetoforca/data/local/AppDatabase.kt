@@ -1,4 +1,3 @@
-// No arquivo: data/local/AppDatabase.kt
 package com.example.projetoforca.data.local
 
 import android.content.Context
@@ -23,7 +22,6 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     "app_database"
                 )
-                    // O Callback foi removido daqui
                     .build()
                 INSTANCE = instance
                 instance
