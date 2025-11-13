@@ -1,5 +1,6 @@
-<img width="740" height="426" alt="image" src="https://github.com/user-attachments/assets/45dde12a-8ac6-4887-862d-5d555ac45474" />
-Jogo da Forca - App Android
+-----------------------------------------------------------------------------------Jogo da Forca - App Android ----------------------------------------------------------------------------
+
+
 Este é um aplicativo Android nativo do clássico Jogo da Forca, desenvolvido com Kotlin e Jetpack Compose. O projeto implementa uma arquitetura moderna (MVVM), persistência de dados local (Room) e autenticação de usuários (Firebase).
 
 🚀 Funcionalidades
@@ -66,4 +67,12 @@ Faça o download do seu próprio google-services.json e substitua o arquivo exis
 
 Execute o Aplicativo:
 
-Pressione Shift + F10 (ou clique em "Run") no Android Studio para compilar e executar o app em um emulador ou dispositivo físico.
+Pressione Shift + F10 (ou clique em "Run") no Android Studio para compilar e executar o app em um emulador ou dispositivo físico. 
+
+
+
+
+
+
+<img width="740" height="426" alt="image" src="https://github.com/user-attachments/assets/45dde12a-8ac6-4887-862d-5d555ac45474" />
+
