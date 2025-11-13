@@ -49,9 +49,5 @@ O projeto utiliza arquitetura moderna (**MVVM**), persistência local com **Room
 
 ## 🔧 Como Executar
 
-### 1. Clone o repositório
-```bash
-git clone https://[URL-DO-SEU-REPOSITORIO]
-
 📸 Screenshot
 <p align="center"> <img width="740" height="426" src="https://github.com/user-attachments/assets/45dde12a-8ac6-4887-862d-5d555ac45474" alt="App Screenshot"> </p>
